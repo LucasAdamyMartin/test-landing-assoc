@@ -3,6 +3,19 @@
    Script JavaScript principal
    ================================= */
 
+// Utility: Throttle function pour optimiser les performances
+function throttle(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 // Attendre que le DOM soit chargé
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -57,37 +70,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ======================
-    // Navbar au scroll
+    // Scroll Event Optimisé (regroupé avec throttle)
     // ======================
     const navbar = document.getElementById('navbar');
-    let lastScroll = 0;
+    const sections = document.querySelectorAll('.section, .hero');
+    const hero = document.querySelector('.hero');
 
-    window.addEventListener('scroll', function() {
+    const handleScroll = throttle(function() {
         const currentScroll = window.pageYOffset;
 
-        // Ajouter classe "scrolled" après 100px
+        // 1. Navbar au scroll
         if (currentScroll > 100) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
 
-        lastScroll = currentScroll;
-    });
-
-    // ======================
-    // Active link au scroll
-    // ======================
-    const sections = document.querySelectorAll('.section, .hero');
-
-    window.addEventListener('scroll', function() {
+        // 2. Active link au scroll
         let current = '';
-
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-
-            if (pageYOffset >= (sectionTop - 150)) {
+            if (currentScroll >= (sectionTop - 150)) {
                 current = section.getAttribute('id');
             }
         });
@@ -98,7 +101,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 link.classList.add('active');
             }
         });
-    });
+
+        // 3. Parallax léger sur hero
+        if (hero && currentScroll < hero.offsetHeight) {
+            hero.style.transform = `translateY(${currentScroll * 0.5}px)`;
+        }
+    }, 100);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
     // ======================
     // Animations au scroll (Intersection Observer)
@@ -218,19 +228,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 
-    // ======================
-    // Parallax léger sur hero
-    // ======================
-    const hero = document.querySelector('.hero');
-
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const parallaxSpeed = 0.5;
-
-        if (hero && scrolled < hero.offsetHeight) {
-            hero.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
-        }
-    });
 
     // ======================
     // FAQ Accordion

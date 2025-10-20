@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PWL - Association de Powerlifting. Rejoignez notre communauté passionnée. Salle équipée 24h/24, 7j/7 avec racks IPF, plateformes et coaching. Séance d'essai gratuite !">
-    <meta name="keywords" content="powerlifting, musculation, force athlétique, salle de sport, squat, bench press, deadlift, IPF, coaching, association sportive">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="PWL - Association de Powerlifting à Vernou-sur-Brenne. Rejoignez notre communauté passionnée. Salle équipée 24h/24, 7j/7 avec racks IPF, plateformes et coaching. Séance d'essai gratuite !">
+    <meta name="keywords" content="powerlifting, musculation, force athlétique, salle de sport, squat, bench press, deadlift, IPF, coaching, association sportive, Vernou-sur-Brenne, Tours, powerlifting france">
     <meta name="author" content="PWL - Power League">
     <meta name="robots" content="index, follow">
+    <meta name="language" content="fr">
+    <meta name="geo.region" content="FR-37">
+    <meta name="geo.placename" content="Vernou-sur-Brenne">
+    <link rel="canonical" href="https://www.pwl-powerlifting.fr/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -24,17 +29,66 @@
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💪</text></svg>">
     <title>PWL - Association de Powerlifting | Salle 24h/24 - Séance d'essai gratuite</title>
-    <link rel="stylesheet" href="style.css">
+
+    <!-- Preconnect pour optimiser les fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+    <!-- Preload pour les ressources critiques -->
+    <link rel="preload" href="public/logo.webp" as="image" type="image/webp">
+    <link rel="preload" href="public/group-2.webp" as="image" type="image/webp">
+    <link rel="preload" href="style.css" as="style">
+
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet"></noscript>
+
+    <!-- Structured Data / JSON-LD pour le SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SportsActivityLocation",
+        "name": "PWL - Power League",
+        "description": "Association de Powerlifting à Vernou-sur-Brenne. Salle équipée 24h/24, 7j/7 avec racks IPF, plateformes et coaching professionnel.",
+        "url": "https://www.pwl-powerlifting.fr",
+        "image": "https://www.pwl-powerlifting.fr/public/logo.webp",
+        "logo": "https://www.pwl-powerlifting.fr/public/logo.webp",
+        "telephone": "",
+        "email": "powerleague.pwl@gmail.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "193 Prairie de Champ Martin",
+            "addressLocality": "Vernou-sur-Brenne",
+            "postalCode": "37210",
+            "addressCountry": "FR"
+        },
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+            "opens": "00:00",
+            "closes": "23:59"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "47.3910",
+            "longitude": "0.8423"
+        },
+        "priceRange": "€€",
+        "sameAs": [
+            "https://www.instagram.com/powerleague.cvl"
+        ],
+        "sport": "Powerlifting"
+    }
+    </script>
 </head>
 <body>
+    <!-- Skip to main content for accessibility -->
+    <a href="#hero" class="skip-to-main">Aller au contenu principal</a>
 
     <!-- Navigation -->
     <nav class="navbar" id="navbar" role="navigation" aria-label="Navigation principale">
         <div class="nav-container">
-            <div class="nav-logo" aria-label="Logo PWL"><img src="public/logo.webp"/></div>
+            <div class="nav-logo" aria-label="Logo PWL"><img src="public/logo.webp" alt="Logo PWL Power League" width="80" height="80" fetchpriority="high"/></div>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#hero" class="nav-link">Accueil</a></li>
                 <li><a href="#esprit" class="nav-link">Notre Esprit</a></li>
@@ -54,10 +108,10 @@
 
     <!-- Hero Section -->
     <section class="hero" id="hero">
-        <div class="hero-overlay"><img src="public/group-2.webp"/></div>
+        <div class="hero-overlay"><img src="public/group-2.webp" alt="Photo de groupe des membres de l'association PWL" width="1920" height="1080" fetchpriority="high"/></div>
         <div class="hero-content">
             <div class="hero-logo">
-                <div class="logo-circle"><img src="public/logo.webp"/></div>
+                <div class="logo-circle"><img src="public/logo.webp" alt="Logo PWL" width="150" height="150" fetchpriority="high"/></div>
             </div>
             <h1 class="hero-title">La Power League</h1>
             <p class="hero-subtitle">Unis par la force, animés par la passion.</p>
@@ -94,7 +148,7 @@
                         </p>
                     </div>
                     <div class="esprit-image">
-                        <img src="public/introduction.webp" alt="Notre salle de powerlifting PWL" />
+                        <img src="public/introduction.webp" alt="Notre salle de powerlifting PWL avec équipements professionnels" width="600" height="450" loading="lazy"/>
                     </div>
                 </div>
 
@@ -205,35 +259,35 @@
                 <div class="slider-container">
                     <div class="slider-track">
                         <div class="slide">
-                            <img src="public/slide-1.webp" alt="Événement PWL 1" />
+                            <img src="public/slide-1.webp" alt="Compétition de powerlifting PWL - Athlètes en action" width="350" height="250" loading="lazy"/>
                         </div>
                         <div class="slide">
-                            <img src="public/slide-2.webp" alt="Événement PWL 2" />
+                            <img src="public/slide-2.webp" alt="Événement convivial PWL - Membres de l'association" width="350" height="250" loading="lazy"/>
                         </div>
                         <div class="slide">
-                            <img src="public/slide-3.webp" alt="Événement PWL 3" />
+                            <img src="public/slide-3.webp" alt="Entraînement powerlifting PWL - Session de groupe" width="350" height="250" loading="lazy"/>
                         </div>
                         <div class="slide">
-                            <img src="public/slide-4.webp" alt="Événement PWL 4" />
+                            <img src="public/slide-4.webp" alt="Compétition officielle PWL - Podium et médailles" width="350" height="250" loading="lazy"/>
                         </div>
                         <div class="slide">
-                            <img src="public/slider-6.webp" alt="Événement PWL 6" />
+                            <img src="public/slider-6.webp" alt="Moment convivial PWL - Célébration entre membres" width="350" height="250" loading="lazy"/>
                         </div>
                         <!-- Duplication pour l'effet infini -->
                         <div class="slide">
-                            <img src="public/slide-1.webp" alt="Événement PWL 1" />
+                            <img src="public/slide-1.webp" alt="Compétition de powerlifting PWL - Athlètes en action" width="350" height="250" loading="lazy"/>
                         </div>
                         <div class="slide">
-                            <img src="public/slide-2.webp" alt="Événement PWL 2" />
+                            <img src="public/slide-2.webp" alt="Événement convivial PWL - Membres de l'association" width="350" height="250" loading="lazy"/>
                         </div>
                         <div class="slide">
-                            <img src="public/slide-3.webp" alt="Événement PWL 3" />
+                            <img src="public/slide-3.webp" alt="Entraînement powerlifting PWL - Session de groupe" width="350" height="250" loading="lazy"/>
                         </div>
                         <div class="slide">
-                            <img src="public/slide-4.webp" alt="Événement PWL 4" />
+                            <img src="public/slide-4.webp" alt="Compétition officielle PWL - Podium et médailles" width="350" height="250" loading="lazy"/>
                         </div>
                         <div class="slide">
-                            <img src="public/slider-6.webp" alt="Événement PWL 6" />
+                            <img src="public/slider-6.webp" alt="Moment convivial PWL - Célébration entre membres" width="350" height="250" loading="lazy"/>
                         </div>
                     </div>
                 </div>
@@ -632,6 +686,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
