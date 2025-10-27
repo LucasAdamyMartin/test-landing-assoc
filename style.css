@@ -696,8 +696,8 @@ button:focus-visible,
 
 .slide {
     flex-shrink: 0;
-    width: 350px; /* Taille fixe = taille native des images */
-    height: 250px;
+    width: 450px; /* Ratio 3:2 pour images 1920x1280 */
+    height: 300px;
     border-radius: 15px;
     overflow: hidden;
     position: relative;
@@ -1472,8 +1472,8 @@ button:focus-visible,
 
     /* Slider responsive tablet */
     .slide {
-        width: 320px;
-        height: 228px;
+        width: 360px;
+        height: 240px;
     }
 
     .slider-arrow {
@@ -1608,7 +1608,7 @@ button:focus-visible,
 
     /* Slider mobile */
     .slide {
-        width: 280px;
+        width: 300px;
         height: 200px;
         margin: 0 auto;
     }
