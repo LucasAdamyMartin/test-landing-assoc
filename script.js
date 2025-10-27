@@ -218,8 +218,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Calculer le nombre de slides visibles selon la taille d'écran
         function getSlidesToShow() {
             const width = window.innerWidth;
-            if (width >= 1200) return 3;  // Desktop: 3 cards
-            if (width >= 768) return 2;   // Tablet: 2 cards
+            if (width >= 768) return 2;   // Desktop & Tablet: 2 cards
             return 1;                      // Mobile: 1 card
         }
 

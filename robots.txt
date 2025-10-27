@@ -1,0 +1,13 @@
+# robots.txt pour PWL - Association de Powerlifting
+# https://www.powerleague.fr/robots.txt
+
+User-agent: *
+Allow: /
+
+# Bloquer les fichiers sensibles
+Disallow: /desktop.ini
+Disallow: /.git/
+Disallow: /.claude/
+
+# Sitemap
+Sitemap: https://www.powerleague.fr/sitemap.xml

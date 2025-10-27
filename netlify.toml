@@ -1,0 +1,62 @@
+# Configuration Netlify pour PWL - Association de Powerlifting
+
+# Build settings (si vous utilisez un build futur)
+[build]
+  publish = "."
+  command = "echo 'No build command needed'"
+
+# Redirections - Forcer le domaine principal
+[[redirects]]
+  from = "https://*.netlify.app/*"
+  to = "https://www.powerleague.fr/:splat"
+  status = 301
+  force = true
+
+# Redirection sans www vers www
+[[redirects]]
+  from = "https://powerleague.fr/*"
+  to = "https://www.powerleague.fr/:splat"
+  status = 301
+  force = true
+
+# Headers de sécurité et performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Sécurité
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # Performance
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Headers spécifiques pour les images
+[[headers]]
+  for = "/public/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Headers pour HTML (pas de cache)
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Headers pour les fichiers statiques
+[[headers]]
+  for = "/style.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/script.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Page 404 personnalisée (si vous en créez une)
+# [[redirects]]
+#   from = "/*"
+#   to = "/404.html"
+#   status = 404
