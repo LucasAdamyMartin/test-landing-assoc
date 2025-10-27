@@ -101,43 +101,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 link.classList.add('active');
             }
         });
-
-        // 3. Parallax léger sur hero
-        if (hero && currentScroll < hero.offsetHeight) {
-            hero.style.transform = `translateY(${currentScroll * 0.5}px)`;
-        }
     }, 100);
 
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     // ======================
-    // Animations au scroll (Intersection Observer)
+    // Animations désactivées
     // ======================
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -100px 0px'
-    };
-
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    // Observer les cartes et sections
-    const animatedElements = document.querySelectorAll(
-        '.equipement-card, .evenement-card, .tarif-item, .horaire-block, .stat'
-    );
-
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
+    // Les animations au scroll ont été retirées pour de meilleures performances
 
     // ======================
     // Boutons interactifs
@@ -228,6 +199,176 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 
+
+    // ======================
+    // Slider Événements avec Autoplay
+    // ======================
+    const sliderTrack = document.querySelector('.slider-track');
+    const slides = document.querySelectorAll('.slide');
+    const leftArrow = document.querySelector('.slider-arrow-left');
+    const rightArrow = document.querySelector('.slider-arrow-right');
+    const dotsContainer = document.querySelector('.slider-dots');
+
+    if (sliderTrack && slides.length > 0) {
+        let currentIndex = 0;
+        let autoplayInterval;
+        const autoplayDelay = 8000; // 8 secondes
+        let slidesToShow = getSlidesToShow();
+
+        // Calculer le nombre de slides visibles selon la taille d'écran
+        function getSlidesToShow() {
+            const width = window.innerWidth;
+            if (width >= 1200) return 3;  // Desktop: 3 cards
+            if (width >= 768) return 2;   // Tablet: 2 cards
+            return 1;                      // Mobile: 1 card
+        }
+
+        // Calculer la largeur des slides dynamiquement
+        function updateSlideWidths() {
+            slidesToShow = getSlidesToShow();
+            updateSliderPosition();
+            updateDots();
+        }
+
+        // Créer les dots de navigation
+        function createDots() {
+            slidesToShow = getSlidesToShow(); // Recalculer avant de créer les dots
+            const totalDots = Math.max(1, slides.length - slidesToShow + 1);
+            dotsContainer.innerHTML = '';
+
+            for (let i = 0; i < totalDots; i++) {
+                const dot = document.createElement('button');
+                dot.classList.add('slider-dot');
+                dot.setAttribute('aria-label', `Aller à la slide ${i + 1}`);
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        // Mettre à jour les dots
+        function updateDots() {
+            const dots = document.querySelectorAll('.slider-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        // Aller à une slide spécifique
+        function goToSlide(index) {
+            const maxIndex = Math.max(0, slides.length - slidesToShow);
+            currentIndex = Math.max(0, Math.min(index, maxIndex));
+            updateSliderPosition();
+            updateDots();
+            resetAutoplay();
+        }
+
+        // Mettre à jour la position du slider
+        function updateSliderPosition() {
+            const firstSlide = slides[0];
+            if (!firstSlide) return;
+
+            const slideWidth = firstSlide.offsetWidth;
+            const gap = 32;
+            const offset = -(currentIndex * (slideWidth + gap));
+            sliderTrack.style.transform = `translateX(${offset}px)`;
+        }
+
+        // Navigation suivante
+        function nextSlide() {
+            const maxIndex = Math.max(0, slides.length - slidesToShow);
+            if (currentIndex < maxIndex) {
+                goToSlide(currentIndex + 1);
+            } else {
+                goToSlide(0); // Boucle au début
+            }
+        }
+
+        // Navigation précédente
+        function prevSlide() {
+            if (currentIndex > 0) {
+                goToSlide(currentIndex - 1);
+            } else {
+                goToSlide(Math.max(0, slides.length - slidesToShow)); // Boucle à la fin
+            }
+        }
+
+        // Démarrer l'autoplay
+        function startAutoplay() {
+            autoplayInterval = setInterval(nextSlide, autoplayDelay);
+        }
+
+        // Arrêter l'autoplay
+        function stopAutoplay() {
+            clearInterval(autoplayInterval);
+        }
+
+        // Réinitialiser l'autoplay
+        function resetAutoplay() {
+            stopAutoplay();
+            startAutoplay();
+        }
+
+        // Event listeners
+        if (leftArrow) {
+            leftArrow.addEventListener('click', prevSlide);
+        }
+
+        if (rightArrow) {
+            rightArrow.addEventListener('click', nextSlide);
+        }
+
+        // Pause autoplay au hover
+        sliderTrack.parentElement.parentElement.addEventListener('mouseenter', stopAutoplay);
+        sliderTrack.parentElement.parentElement.addEventListener('mouseleave', startAutoplay);
+
+        // Gestion du redimensionnement
+        let resizeSliderTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeSliderTimer);
+            resizeSliderTimer = setTimeout(() => {
+                createDots(); // Recréer les dots selon la nouvelle taille
+                updateSlideWidths();
+            }, 250);
+        });
+
+        // Support du swipe sur mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        sliderTrack.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        sliderTrack.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchStartX - touchEndX > swipeThreshold) {
+                nextSlide(); // Swipe gauche
+            } else if (touchEndX - touchStartX > swipeThreshold) {
+                prevSlide(); // Swipe droite
+            }
+        }
+
+        // Navigation clavier
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+            }
+        });
+
+        // Initialisation
+        createDots();
+        updateSlideWidths();
+        startAutoplay();
+
+        console.log('Slider initialisé avec', slides.length, 'slides');
+    }
 
     // ======================
     // FAQ Accordion
