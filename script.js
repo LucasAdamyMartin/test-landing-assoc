@@ -266,8 +266,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!firstSlide) return;
 
             const slideWidth = firstSlide.offsetWidth;
-            // Sur mobile ≤425px, pas de gap entre les slides
-            const gap = window.innerWidth <= 425 ? 0 : 32;
+            // Sur mobile ≤768px, pas de gap entre les slides (pleine largeur)
+            const gap = window.innerWidth <= 768 ? 0 : 32;
             const offset = -(currentIndex * (slideWidth + gap));
             sliderTrack.style.transform = `translateX(${offset}px)`;
         }
