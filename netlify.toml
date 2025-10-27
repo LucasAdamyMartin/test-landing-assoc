@@ -1,23 +1,12 @@
 # Configuration Netlify pour PWL - Association de Powerlifting
 
-# Build settings (si vous utilisez un build futur)
+# Build settings
 [build]
   publish = "."
   command = "echo 'No build command needed'"
 
-# Redirections - Forcer le domaine principal
-[[redirects]]
-  from = "https://*.netlify.app/*"
-  to = "https://www.powerleague.fr/:splat"
-  status = 301
-  force = true
-
-# Redirection sans www vers www
-[[redirects]]
-  from = "https://powerleague.fr/*"
-  to = "https://www.powerleague.fr/:splat"
-  status = 301
-  force = true
+# Note: Les redirections de domaine sont gérées directement dans les paramètres Netlify
+# pour éviter les boucles de redirection (ERR_TOO_MANY_REDIRECTS)
 
 # Headers de sécurité et performance
 [[headers]]
