@@ -1552,7 +1552,7 @@ button:focus-visible,
         top: 70px;
         left: -100%;
         flex-direction: column;
-        background: var(--color-dark);
+        background: var(--color-dark) !important;
         backdrop-filter: blur(10px);
         width: 100%;
         height: calc(100vh - 70px);
@@ -1561,6 +1561,11 @@ button:focus-visible,
         transition: var(--transition-normal);
         border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         z-index: 1000;
+    }
+
+    .nav-menu li {
+        background: transparent !important;
+        list-style: none;
     }
 
     .nav-menu.active {
