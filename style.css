@@ -1626,6 +1626,78 @@ button:focus-visible,
         width: 18px;
         height: 18px;
     }
+}
+
+/* =================================
+   MOBILE TRÈS PETIT (≤425px)
+   ================================= */
+
+@media (max-width: 425px) {
+    /* Slider pleine largeur sur très petit écran */
+    .evenements-slider {
+        margin-left: calc(-1 * var(--spacing-md));
+        margin-right: calc(-1 * var(--spacing-md));
+    }
+
+    .slider-wrapper {
+        gap: 0;
+        position: relative;
+    }
+
+    .slider-container {
+        width: 100%;
+        padding: var(--spacing-md) 0;
+        overflow: hidden;
+    }
+
+    .slide {
+        width: 100vw;
+        height: calc(100vw * 2 / 3); /* Ratio 3:2 */
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .slider-track {
+        gap: 0;
+    }
+
+    /* Flèches à l'intérieur sur mobile */
+    .slider-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        background: rgba(139, 92, 246, 0.7);
+        z-index: 10;
+    }
+
+    .slider-arrow:hover {
+        background: rgba(139, 92, 246, 0.9);
+    }
+
+    .slider-arrow-left {
+        left: 10px;
+    }
+
+    .slider-arrow-right {
+        right: 10px;
+    }
+
+    .slider-arrow svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Dots plus petits */
+    .slider-dots {
+        margin-top: var(--spacing-sm);
+    }
+
+    .slider-dot {
+        width: 8px;
+        height: 8px;
+    }
 
     .hero-subtitle {
         font-size: 1rem;
