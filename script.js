@@ -332,14 +332,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Navigation clavier
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') {
-                prevSlide();
-            } else if (e.key === 'ArrowRight') {
-                nextSlide();
-            }
-        });
+        // Navigation clavier (désactivée pour éviter conflit avec scroll sur mobile)
+        // La navigation se fait via flèches tactiles, swipe et dots
 
         // Initialisation
         createDots();
