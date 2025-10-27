@@ -561,6 +561,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // ======================
+    // Tooltip cliquable sur mobile (icône info tarifs)
+    // ======================
+    const infoIcons = document.querySelectorAll('.tarif-info-icon');
+
+    infoIcons.forEach(icon => {
+        // Sur mobile, toggle la classe 'active' au tap
+        icon.addEventListener('click', function(e) {
+            e.stopPropagation();
+
+            // Fermer les autres tooltips
+            infoIcons.forEach(other => {
+                if (other !== icon) other.classList.remove('active');
+            });
+
+            // Toggle ce tooltip
+            this.classList.toggle('active');
+        });
+    });
+
+    // Fermer les tooltips en cliquant ailleurs
+    document.addEventListener('click', function() {
+        infoIcons.forEach(icon => icon.classList.remove('active'));
+    });
+
+    // ======================
     // Console log pour debug
     // ======================
     console.log('PWL Website - JavaScript chargé avec succès ✓');

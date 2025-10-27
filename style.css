@@ -1017,20 +1017,88 @@ button:focus-visible,
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
     background: var(--color-primary);
     color: var(--color-white);
     border-radius: 50%;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     font-style: normal;
-    cursor: help;
+    cursor: pointer;
     transition: var(--transition-fast);
+    position: relative;
+    font-weight: 700;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.tarif-info-icon:hover {
-    transform: scale(1.2);
+.tarif-info-icon:hover,
+.tarif-info-icon:active {
+    transform: scale(1.15);
     background: var(--color-primary-light);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.5);
+}
+
+/* Tooltip moderne pour mobile */
+.tarif-info-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    background: var(--color-dark);
+    color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--color-primary);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    font-weight: 400;
+    line-height: 1.4;
+}
+
+.tarif-info-icon::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%) scale(0);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid var(--color-primary);
+    z-index: 1001;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.tarif-info-icon:hover::after,
+.tarif-info-icon:hover::before,
+.tarif-info-icon.active::after,
+.tarif-info-icon.active::before {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+}
+
+/* Mobile : tooltip cliquable et responsive */
+@media (max-width: 768px) {
+    .tarif-info-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+    }
+
+    .tarif-info-icon::after {
+        white-space: normal;
+        max-width: 250px;
+        text-align: center;
+        font-size: 0.8rem;
+    }
 }
 
 .tarif-price {
