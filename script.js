@@ -258,7 +258,6 @@ document.addEventListener('DOMContentLoaded', function() {
             currentIndex = Math.max(0, Math.min(index, maxIndex));
             updateSliderPosition();
             updateDots();
-            resetAutoplay();
         }
 
         // Mettre à jour la position du slider
@@ -291,22 +290,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Démarrer l'autoplay
-        function startAutoplay() {
-            autoplayInterval = setInterval(nextSlide, autoplayDelay);
-        }
-
-        // Arrêter l'autoplay
-        function stopAutoplay() {
-            clearInterval(autoplayInterval);
-        }
-
-        // Réinitialiser l'autoplay
-        function resetAutoplay() {
-            stopAutoplay();
-            startAutoplay();
-        }
-
         // Event listeners
         if (leftArrow) {
             leftArrow.addEventListener('click', prevSlide);
@@ -315,10 +298,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (rightArrow) {
             rightArrow.addEventListener('click', nextSlide);
         }
-
-        // Pause autoplay au hover
-        sliderTrack.parentElement.parentElement.addEventListener('mouseenter', stopAutoplay);
-        sliderTrack.parentElement.parentElement.addEventListener('mouseleave', startAutoplay);
 
         // Gestion du redimensionnement
         let resizeSliderTimer;
@@ -364,10 +343,105 @@ document.addEventListener('DOMContentLoaded', function() {
         // Initialisation
         createDots();
         updateSlideWidths();
-        startAutoplay();
 
-        console.log('Slider initialisé avec', slides.length, 'slides');
+        console.log('Slider initialisé avec', slides.length, 'slides (autoplay désactivé)');
     }
+
+    // ======================
+    // Lightbox pour les images du slider
+    // ======================
+    const sliderImages = document.querySelectorAll('.slide img');
+    let lightbox = null;
+
+    // Créer la lightbox
+    function createLightbox() {
+        if (!lightbox) {
+            lightbox = document.createElement('div');
+            lightbox.className = 'lightbox';
+            lightbox.innerHTML = `
+                <div class="lightbox-content">
+                    <button class="lightbox-close" aria-label="Fermer la lightbox">&times;</button>
+                    <img class="lightbox-image" src="" alt="">
+                    <button class="lightbox-prev" aria-label="Image précédente">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                    </button>
+                    <button class="lightbox-next" aria-label="Image suivante">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(lightbox);
+        }
+        return lightbox;
+    }
+
+    // Ouvrir la lightbox
+    function openLightbox(imageSrc, imageAlt, imageIndex) {
+        const lb = createLightbox();
+        const img = lb.querySelector('.lightbox-image');
+        img.src = imageSrc;
+        img.alt = imageAlt;
+        lb.dataset.currentIndex = imageIndex;
+        lb.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        // Event listeners
+        const closeBtn = lb.querySelector('.lightbox-close');
+        const prevBtn = lb.querySelector('.lightbox-prev');
+        const nextBtn = lb.querySelector('.lightbox-next');
+
+        closeBtn.onclick = closeLightbox;
+        lb.onclick = (e) => {
+            if (e.target === lb) closeLightbox();
+        };
+
+        prevBtn.onclick = () => navigateLightbox(-1);
+        nextBtn.onclick = () => navigateLightbox(1);
+
+        // Navigation clavier
+        document.addEventListener('keydown', handleLightboxKeys);
+    }
+
+    // Fermer la lightbox
+    function closeLightbox() {
+        if (lightbox) {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+            document.removeEventListener('keydown', handleLightboxKeys);
+        }
+    }
+
+    // Navigation dans la lightbox
+    function navigateLightbox(direction) {
+        const currentIndex = parseInt(lightbox.dataset.currentIndex);
+        const newIndex = (currentIndex + direction + sliderImages.length) % sliderImages.length;
+        const newImage = sliderImages[newIndex];
+
+        const img = lightbox.querySelector('.lightbox-image');
+        img.src = newImage.src;
+        img.alt = newImage.alt;
+        lightbox.dataset.currentIndex = newIndex;
+    }
+
+    // Gestion des touches clavier
+    function handleLightboxKeys(e) {
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') navigateLightbox(-1);
+        if (e.key === 'ArrowRight') navigateLightbox(1);
+    }
+
+    // Ajouter les event listeners sur les images du slider
+    sliderImages.forEach((img, index) => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openLightbox(img.src, img.alt, index);
+        });
+    });
 
     // ======================
     // FAQ Accordion
